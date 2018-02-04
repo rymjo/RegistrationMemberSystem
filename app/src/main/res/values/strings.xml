@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RMS</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="txt_scan">Scannen</string>
+    <string name="txt_save">Speichern</string>
+    <string name="txt_progressdialogmessage">Bitte warten ...</string>
+    <string name="txt_choose">Bitte wählen...</string>
+    <string name="txt_nodata">Keine Daten gefunden!</string>
+    <string name="txt_not_save_data">Die Daten konnten nicht gespeichert werden!</string>
+    <string name="txt_saving_successfull">Daten erfolgreich gespeichert</string>
+    <string name="txt_error_saving">Fehler beim Speichern der Daten.</string>
+    <string name="txt_registartion_list">Registration List</string>
+    <string name="txt_date_from">Startdatum</string>
+    <string name="txt_date_to">Stopdatum</string>
+    <string name="txt_registartion_search">Registration Suche</string>
+    <string name="txt_search">Suchen</string>
+    <string name="txt_export">Exportieren...</string>
+</resources>
