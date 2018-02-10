@@ -18,6 +18,7 @@ import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.Activ
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import microvone.de.base.CategoryListFragment
+import microvone.de.base.ToolFragment
 import microvone.de.utils.Names
 
 
@@ -132,11 +133,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_search -> {
                 fragment = RegistrationSearchFragment()
             }
-            R.id.nav_slideshow -> {
+            R.id.nav_list -> {
+                fragment = RegistrationListFragment()
 
             }
             R.id.nav_manage -> {
-
+                fragment = ToolFragment()
             }
             R.id.nav_share -> {
 

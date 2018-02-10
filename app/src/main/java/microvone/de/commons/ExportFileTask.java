@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -42,6 +43,7 @@ public class ExportFileTask extends AsyncTask<Void, Void, String> {
                     f.createNewFile();
                 } catch (IOException e) {
                     Log.e(TAG, "Error", e);
+
                 }
             }
 

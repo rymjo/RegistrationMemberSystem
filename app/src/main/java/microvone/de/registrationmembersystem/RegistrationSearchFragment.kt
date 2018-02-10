@@ -10,7 +10,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import microvone.de.base.ScanMainFragment
 import microvone.de.commons.DatePickerFragment
+import microvone.de.commons.DatePickerKeys
+import microvone.de.utils.Names
 
 
 class RegistrationSearchFragment : Fragment() {
@@ -53,10 +56,18 @@ class RegistrationSearchFragment : Fragment() {
 
         btn_search = this.activity.findViewById<Button>(R.id.btn_search)
         btn_search!!.setOnClickListener { v ->
-            //            val intent = Intent(v.context, RegistrationListActivity::class.java)
-//            intent.putExtra(DatePickerKeys.START_DATE, editText_startDate!!.text.toString())
-//            intent.putExtra(DatePickerKeys.STOP_DATE, editText_stopDate!!.getText().toString())
-//            startActivity(intent)
+
+            var bundle = Bundle()
+            bundle.putString(DatePickerKeys.START_DATE, editText_startDate?.text.toString())
+            bundle.putString(DatePickerKeys.STOP_DATE, editText_stopDate?.text.toString())
+
+            var fragment: Fragment? = null
+            val fragmentManager2 = this.activity.supportFragmentManager
+            val fragmentTransaction = fragmentManager2.beginTransaction()
+            fragment = RegistrationListFragment()
+            fragment.setArguments(bundle)
+            fragmentTransaction.replace(R.id.content_frame, fragment)
+            fragmentTransaction.commit()
         }
     }
 

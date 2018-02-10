@@ -6,9 +6,9 @@ import android.os.Bundle
 import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.BarcodeCallback
-import android.app.Activity
+
 import android.content.Intent
-import android.content.SharedPreferences
+
 import android.graphics.Color
 import android.util.Log
 import android.view.KeyEvent
@@ -17,11 +17,11 @@ import android.widget.ImageView
 import microvone.de.registrationmembersystem.MainActivity
 import microvone.de.registrationmembersystem.R
 import microvone.de.utils.Names
-import java.text.SimpleDateFormat
+
 import java.util.*
-import android.content.ContentValues.TAG
+
 import android.support.v7.app.AppCompatActivity
-import microvone.de.base.ScanMainFragment
+
 
 
 /**
