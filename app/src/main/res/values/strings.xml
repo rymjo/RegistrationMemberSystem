@@ -21,4 +21,7 @@
     <string name="txt_registartion_search">Registration Suche</string>
     <string name="txt_search">Suchen</string>
     <string name="txt_export">Exportieren...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

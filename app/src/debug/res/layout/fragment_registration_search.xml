@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="microvone.de.registrationmembersystem.RegistrationSearchFragment">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+        <ImageButton
+            android:id="@+id/imageButton_startdate"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/txt_date_from"
+            app:srcCompat="@android:drawable/ic_menu_today"
+            android:layout_marginTop="58dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="72dp" />
+        <EditText
+            android:id="@+id/editText_startdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/imageButton_startdate"
+            android:ems="10"
+            android:hint="@string/txt_date_from"
+            android:inputType="date"
+            tools:ignore="RelativeOverlap" />
+        <ImageButton
+            android:id="@+id/imageButton_stopdate"
+            android:layout_width="71dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/txt_date_to"
+            app:srcCompat="@android:drawable/ic_menu_today"
+            android:layout_marginTop="92dp"
+            android:layout_below="@+id/imageButton_startdate"
+            android:layout_alignStart="@+id/imageButton_startdate" />
+        <EditText
+            android:id="@+id/editText_stopdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageButton_stopdate"
+            android:layout_alignParentStart="true"
+            android:ems="10"
+            android:hint="@string/txt_date_to"
+            android:inputType="date" />
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editText_stopdate"
+            android:layout_marginTop="35dp"
+            android:text="@string/txt_search"
+            android:layout_alignEnd="@+id/imageButton_stopdate" />
+    </RelativeLayout>
+
+</FrameLayout>

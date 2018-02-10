@@ -24,10 +24,17 @@ import microvone.de.utils.Names
 // TODO:  Replace Fragements by click menu -
 // https://developer.android.com/training/implementing-navigation/nav-drawer.html
 // http://abhiandroid.com/materialdesign/navigation-drawer
+/**
+ * Main activity with menu list and start fragment
+ */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     val TAG = MainActivity::class.java.simpleName
 
+    /**
+     * Create method
+     * @param savedInstanceState
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -53,8 +60,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         displaySelectedScreen(R.id.nav_scanner)
     }
 
+    /**
+     * Back pressed method
+     */
     override fun onBackPressed() {
-        Log.i("MainTag", "onBackPressed")
+        Log.i(TAG, "onBackPressed")
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
@@ -63,12 +73,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /**
+     * Create the option menu
+     * @param menu
+     *
+     * @return TRUE
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
+    /**
+     * Method to navigate through option menu by selecting an option item
+     * @param item the MenuItem
+     *
+     * @return TRUE
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -79,6 +101,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    /**
+     * Methode to handle the action by selecting an navigation item, e.g. start view
+     * @param item the MenuItem
+     *
+     * @return TRUE
+     */
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         //calling the method displayselectedscreen and passing the id of selected menu
@@ -87,6 +115,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    /**
+     * @param itemId the id to display the view/fragment
+     */
     private fun displaySelectedScreen(itemId: Int) {
 
         //creating fragment object
@@ -98,8 +129,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = CategoryListFragment()
 
             }
-            R.id.nav_gallery -> {
-
+            R.id.nav_search -> {
+                fragment = RegistrationSearchFragment()
             }
             R.id.nav_slideshow -> {
 
@@ -127,10 +158,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     /**
-     *
+     * Method to handle the results if an activity is started by result
+     * @param requestCode
+     * @param resultCode
+     * @param data
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-         Log.i(TAG, "resultCode Items!" + resultCode)
+        Log.i(TAG, "resultCode Items!" + resultCode)
         Log.i(TAG, "requestCode Items!" + requestCode)
         Log.i(TAG, "data Items!" + data)
 

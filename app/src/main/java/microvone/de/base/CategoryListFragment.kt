@@ -1,30 +1,21 @@
 package microvone.de.base
 
-import android.app.FragmentManager
 import android.app.ProgressDialog
-
-import android.support.v4.app.LoaderManager
-
-import android.content.Intent
-
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
-
 import android.os.Bundle
 import android.support.annotation.Nullable
 import android.support.v4.app.Fragment
 import android.support.v4.app.ListFragment
+import android.support.v4.app.LoaderManager
 import android.support.v4.content.Loader
-
 import android.util.Log
-import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
-
-import microvone.de.barcode.ScanActivity
 import microvone.de.database.CategoryColumns
 import microvone.de.database.DbHelper
 import microvone.de.database.SqliteLoader
@@ -34,6 +25,7 @@ import microvone.de.utils.Names
 
 /**
  * Created by jörn on 18.01.2018.
+ * Fragemnt to show the categories
  */
 class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -54,17 +46,25 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
     /** IDs im SimpleListView Layout.  */
     private val SIMPLE_LIST_VIEW_IDS = intArrayOf(android.R.id.text1, android.R.id.text2)
 
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     *
+     * @return View
+     */
     @Nullable
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
 
-
         //returning our layout file
-
         //change R.layout.yourlayoutfilename for each of your fragments
         return inflater!!.inflate(R.layout.fragment_category_list, container, false)
     }
 
-
+    /**
+     * @param view
+     * @param savedInstanceState
+     */
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //you can set the title for your toolbar here for different fragments different titles
@@ -93,6 +93,9 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
         lm.initLoader(LOADER_ID, null, mLoaderCallbacks)
     }
 
+    /**
+     * @param loader
+     */
     override fun onLoaderReset(loader: Loader<Cursor>?) {
         Log.i(TAG, "onLoaderReset " + loader?.getId())
         loadInProgressDialog?.cancel()
@@ -101,6 +104,10 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
         }
     }
 
+    /**
+     * @param id
+     * @param args
+     */
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor>? {
         Log.i(TAG, "onCreateLoader")
         loadInProgressDialog = ProgressDialog.show(this@CategoryListFragment.context, getString(R.string.txt_progressdialogmessage), "", true)
@@ -109,6 +116,10 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
         return loader
     }
 
+    /**
+     * @param loader
+     * @param data
+     */
     override fun onLoadFinished(loader: Loader<Cursor>?, data: Cursor?) {
         Log.i(TAG, "onLoadFinished " + loader?.getId())
         loadInProgressDialog?.cancel()
@@ -120,17 +131,19 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
 
     }
 
+    /**
+     * Click item of the list
+     * @param l the listView
+     * @param v the main view
+     * @param position
+     * @param id
+     */
     override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
         super.onListItemClick(l, v, position, id)
         val cursor = listAdapter.getItem(position) as Cursor
 
         Log.i(TAG, " Category sprung zum Scannen: " + id)
         Log.i(TAG, " Category sprung zum Scannen: " + cursor.getString(1))
-
-       /* val intent = Intent(this.context, ScanActivity::class.java)
-        intent.putExtra(Names.CATEGORY_ID.toString(), id)
-        intent.putExtra(Names.CATEGORY_NAME.toString(), cursor.getString(1))
-        startActivity(intent)*/
 
         var bundle = Bundle()
         bundle.putLong(Names.CATEGORY_ID.toString(), id)
@@ -142,13 +155,8 @@ class CategoryListFragment : ListFragment(), LoaderManager.LoaderCallbacks<Curso
         fragment = ScanMainFragment()
         fragment.setArguments(bundle)
 
-        //fragmentTransaction.addToBackStack("xyz")
-        //fragmentTransaction.hide(this@MeinProfilFragment)
         fragmentTransaction.replace(R.id.content_frame, fragment)
-        //fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
-        //ft.replace(R.id.content_frame, fragment)
-        //ft.commit()
     }
 
 
