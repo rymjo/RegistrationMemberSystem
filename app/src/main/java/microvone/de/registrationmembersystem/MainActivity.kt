@@ -17,8 +17,9 @@ import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.Activ
 import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.ActivityResultEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import microvone.de.admin.ClubAdminBaseFragment
 import microvone.de.base.CategoryListFragment
-import microvone.de.base.ToolFragment
+
 import microvone.de.utils.Names
 
 
@@ -138,7 +139,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             }
             R.id.nav_manage -> {
-                fragment = ToolFragment()
+                fragment = ClubAdminBaseFragment()
             }
             R.id.nav_share -> {
 

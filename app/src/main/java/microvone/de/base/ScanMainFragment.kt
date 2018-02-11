@@ -31,6 +31,11 @@ class ScanMainFragment : StatedFragment() {
     private var idCategory: Long = 0
     private var nameCategory: String? = null
 
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     */
     @Nullable
     override fun onCreateView(inflater: LayoutInflater?, @Nullable container: ViewGroup?, @Nullable savedInstanceState: Bundle?): View? {
         //returning our layout file
@@ -38,7 +43,10 @@ class ScanMainFragment : StatedFragment() {
         return inflater!!.inflate(R.layout.fragment_scan_main, container, false)
     }
 
-
+    /**
+     * @param view
+     * @param savedInstanceState
+     */
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //you can set the title for your toolbar here for different fragments different titles
@@ -84,22 +92,35 @@ class ScanMainFragment : StatedFragment() {
         saveButton.setOnClickListener { v -> saveBarCodes(v) }
     }
 
+    /**
+     *
+     */
     override fun onResume() {
         super.onResume()
         Log.i(TAG, "onResume")
     }
 
+    /**
+     *
+     */
     override fun onPause() {
         super.onPause()
         Log.i(TAG, "onPause")
 
     }
 
+    /**
+     *
+     */
     override fun onDestroy() {
         super.onDestroy()
         Log.i(TAG, "onDestroy")
     }
 
+    /**
+     * Save the barcodes
+     * @param view
+     */
     fun saveBarCodes(view: View) {
         Log.i(TAG, "Save Items!")
         Log.i(TAG, "barcodeItems!" + barcodeItems)
@@ -126,6 +147,12 @@ class ScanMainFragment : StatedFragment() {
 
     }
 
+    /**
+     * Aufbau der Liste nach dem Scannen
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     // TODO: Handle onActivityResult in Fragments!!!
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)

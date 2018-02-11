@@ -154,18 +154,15 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
-            } else {
+            }
+            /*else {
 
                 // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(this.activity,
                         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                         44444)
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
+            }*/
 
         }
         exportButton = this.activity.findViewById(R.id.btn_export) as Button
@@ -194,7 +191,7 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
     }
 
     /**
-     * TODO: Check for external storage
+     * Export data to file in download directory
      * @param view
      */
     fun exportToFile(view: View) {
@@ -242,9 +239,20 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         } finally {
             cursor?.close()
         }
-
-        val task = ExportFileTask(view.context, values)
-        task.execute()
+        val permissionCheck = ContextCompat.checkSelfPermission(this.activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        Log.i(TAG, "permissionCheck(): " + permissionCheck)
+        // Saving allowed
+        if (!isExternalStorageWritable() || permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            exportButton?.setEnabled(false)
+            Toast.makeText(this.activity.applicationContext, "Export files not allowed", Toast.LENGTH_LONG).show()
+            if(view != null) {
+                requestPermission(view)
+            }
+        } else {
+            Toast.makeText(this.activity.applicationContext, "Exporting data to file", Toast.LENGTH_LONG).show()
+            val task = ExportFileTask(view.context, values)
+            task.execute()
+        }
 
     }
 
@@ -291,7 +299,7 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         return db
     }
 
-    private val PERMISSION_REQUEST_EXTERNAL_STORAGE = 0
+    //private val PERMISSION_REQUEST_EXTERNAL_STORAGE = 0
     /**
      * Requests the {@link android.Manifest.permission#CAMERA} permission.
      * If an additional rationale should be displayed, the user has to launch the request from
@@ -303,23 +311,16 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
-            // Display a SnackBar with a button to request the missing permission.
+            // TODO:Display a SnackBar with a button to request the missing permission.
 
             Snackbar.make(view, "Camera access is required to display the camera preview.",
-                    Snackbar.LENGTH_INDEFINITE).setAction("OK", View.OnClickListener {
-
-
-                // Request the permission
-                //ActivityCompat.requestPermissions(this.activity, ANZEIGE_REGISTRATION).show()
-            }).show()
+                    Snackbar.LENGTH_INDEFINITE).show()
         } else {
-            Snackbar.make(view,
-                    "Permission is not available. Requesting camera permission.",
-                    Snackbar.LENGTH_SHORT).show();
-            // Request the permission. The result will be received in onRequestPermissionResult().
-           // ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA},
-                  //  PERMISSION_REQUEST_CAMERA);
+            Snackbar.make(view,"Permission is not available. Requesting writing external storage permission.",
+                    Snackbar.LENGTH_SHORT).show()
         }
-}
+    }
+
+
 
 }

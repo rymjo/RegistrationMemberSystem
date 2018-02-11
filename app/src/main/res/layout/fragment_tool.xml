@@ -4,10 +4,21 @@
     android:layout_height="match_parent"
     tools:context="microvone.de.base.ToolFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
 
+        <Button
+            android:id="@+id/btn_export"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daten exportieren" />
+
+        <Button
+            android:id="@+id/btn_club_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vereinsadministration" />
+    </LinearLayout>
 </FrameLayout>
