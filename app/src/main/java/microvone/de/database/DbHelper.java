@@ -46,13 +46,13 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "oncreate");
+        Log.i(TAG, "oncreate");
         sql(db, R.raw.db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(TAG, "Upgrade tables: " + oldVersion + " old - new: " + newVersion);
+        Log.i(TAG, "Upgrade tables: " + oldVersion + " old - new: " + newVersion);
        /* if (oldVersion < 2) {
             sql(db, R.raw.awb_update);
         }*/
@@ -60,45 +60,22 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
     private void sql(SQLiteDatabase db, int id) {
-        Log.d(TAG, "sql");
-        InputStream in = null;
-        InputStreamReader reader = null;
-        BufferedReader buf = null;
-        try {
+        Log.i(TAG, "sql");
 
-            in = context.getResources().openRawResource(id);
-            reader = new InputStreamReader(in);
-            buf = new BufferedReader(reader);
-            String line = null;
+        try (
+                InputStream in = context.getResources().openRawResource(id);
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader buf = new BufferedReader(reader)
+        ) {
+
+            String line;
             while ((line = buf.readLine()) != null) {
-                Log.d("DatabaseManager", "line: " + line);
+                Log.i("DatabaseManager", "line: " + line);
                 db.execSQL(line);
             }
 
         } catch (Exception e) {
             Log.e(TAG, "Error to read sql script", e);
-        } finally{
-            if(buf != null) {
-                try {
-                    buf.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

@@ -1,10 +1,17 @@
 package microvone.de.registrationmembersystem
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
@@ -13,12 +20,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.ActivityResultBus
 import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.ActivityResultEvent
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import microvone.de.admin.ClubAdminBaseFragment
 import microvone.de.base.CategoryListFragment
+import microvone.de.commons.ExportFileTask
+import microvone.de.utils.FileUtils
 
 import microvone.de.utils.Names
 
@@ -60,6 +70,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         //add this line to display menu1 when the activity is loaded
         displaySelectedScreen(R.id.nav_scanner)
+
     }
 
     /**
@@ -158,6 +169,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val drawer = findViewById<View>(R.id.drawer_layout) as DrawerLayout
         drawer.closeDrawer(GravityCompat.START)
+
+
+        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        Log.i(TAG, "permissionCheck(): " + permissionCheck)
+        Log.i(TAG, "permissionCheck2 : " + permissionCheck2)
+        // Saving allowed
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED || permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
+            requestPermission(drawer)
+        }
+
     }
 
     /**
@@ -174,6 +196,38 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
         ActivityResultBus.getInstance().postQueue(ActivityResultEvent(requestCode, resultCode, data))
 
+    }
+
+
+    //private val PERMISSION_REQUEST_EXTERNAL_STORAGE = 0
+    /**
+     * Requests the {@link android.Manifest.permission#CAMERA} permission.
+     * If an additional rationale should be displayed, the user has to launch the request from
+     * a SnackBar that includes additional information.
+     */
+    private fun requestPermission(view:View){
+        // Permission has not been granted and must be requested.
+        var check1 = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        var check2 = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
+        Log.i(TAG, "check1: " + check1)
+        Log.i(TAG, "check2: " + check2)
+        if (!check1 || !check2) {
+            Snackbar.make(view,"Permissions are not available. Need camera and external storage permissions..",
+                    Snackbar.LENGTH_SHORT).setAction("OK", View.OnClickListener {
+                openAppSystemSettings()
+
+            }).show()
+        }
+    }
+
+    /**
+     * Append Context class to open system settings for the app
+     */
+    fun Context.openAppSystemSettings() {
+        startActivity(Intent().apply {
+            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+            data = Uri.fromParts("package", packageName, null)
+        })
     }
 
 }

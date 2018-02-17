@@ -9,6 +9,8 @@ public interface CategoryColumns {
     String TABLE = "Category";
     String ID = "_id";
     String NAME = "name";
-    String[] COLUMNS = new String[] {ID, NAME};
+    String ID_CLUB = "idclub";
+
+    String[] COLUMNS = new String[] {ID, NAME, ID_CLUB};
     String DEFAULT_ORDER_BY = NAME;
 }

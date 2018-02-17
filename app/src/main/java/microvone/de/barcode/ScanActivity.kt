@@ -55,11 +55,12 @@ class ScanActivity : AppCompatActivity() {
         /**
          * get on item click listener
          */
-        listview?.setOnItemClickListener(AdapterView.OnItemClickListener { parent, v, position, id ->
+        listview?.setOnItemLongClickListener(AdapterView.OnItemLongClickListener { parent, v, position, id ->
             Log.i("List View Clicked", "**********")
             Toast.makeText(this@ScanActivity, "Deleted", Toast.LENGTH_LONG).show()
             barcodeItems?.removeAt(position)
             adapter?.notifyDataSetChanged()
+            true
         })
     }
 

@@ -3,11 +3,15 @@ package microvone.de.registrationmembersystem
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ListFragment
@@ -19,13 +23,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.SimpleCursorAdapter
-import android.widget.Toast
+import android.widget.*
 import microvone.de.commons.DatePickerKeys
 import microvone.de.commons.ExportCSVItem
 import microvone.de.commons.ExportFileTask
 import microvone.de.database.DbHelper
+import microvone.de.database.Registration
 import microvone.de.database.RegistrationColumns
 import microvone.de.database.SqliteLoader
 import microvone.de.utils.FileUtils.isExternalStorageWritable
@@ -133,38 +136,7 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
             stopDate = bundle.getString(DatePickerKeys.STOP_DATE)
 
         }
-        // Assume thisActivity is the current activity
-        val permissionCheck = ContextCompat.checkSelfPermission(this.activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        Log.i(TAG, "permissionCheck(): " + permissionCheck)
 
-        // Saving allowed
-        if (!isExternalStorageWritable() || permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            exportButton?.setEnabled(false)
-            Toast.makeText(this.activity.applicationContext, "Saving files not allowed", Toast.LENGTH_LONG).show()
-            if(view != null) {
-                requestPermission(view)
-            }
-        } else {
-            Toast.makeText(this.activity.applicationContext, "Saving files allowed", Toast.LENGTH_LONG).show()
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-            }
-            /*else {
-
-                // No explanation needed, we can request the permission.
-
-                ActivityCompat.requestPermissions(this.activity,
-                        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                        44444)
-            }*/
-
-        }
         exportButton = this.activity.findViewById(R.id.btn_export) as Button
         exportButton?.setOnClickListener { v -> exportToFile(v) }
         Log.i(TAG, "onCreate(): startDate..." + startDate)
@@ -178,6 +150,13 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         mCategoryAdapter = SimpleCursorAdapter(this.context, R.layout.registration_list_item, null, ANZEIGE_REGISTRATION, SIMPLE_LIST_VIEW_IDS, 0)
         listAdapter = mCategoryAdapter
 
+        //view?.setOnItemClickListener(AdapterView.OnItemClickListener { parent, v, position, id ->
+          //  Log.i("List View Clicked", "**********")
+        //    Toast.makeText(this.activity, "Deleted", Toast.LENGTH_LONG).show()
+
+            //mCategoryAdapter?.notifyDataSetChanged()
+       // })
+
         // Referenz auf das Objekt, das sich um die Callbacks nach einer
         // Datenanfrage kümmert. Ist i.A. die Activity oder das aufrufende
         // Fragment.
@@ -188,6 +167,32 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         // Ab hier übernimmt der Manager die Kontrolle über den Lebenszyklus des Loaders.
         val lm = loaderManager
         lm.initLoader(LOADER_ID, null, mLoaderCallbacks)
+
+        var listview = this.activity.findViewById(android.R.id.list) as ListView
+       // listview?.setOnItemClickListener(AdapterView.OnItemClickListener { parent, v, position, id ->
+       //     Log.i(TAG, "DELETE")
+       //     Log.i(TAG, "id" + id)
+      //      Log.i(TAG, "position" + position)
+//delete(DBHelper.IMAGE_TABLE, DBHelper.IMAGE_ID + "=" + id, null)
+            // TODO: DElete from DB!Toast.makeText(this.activity, "Deleted", Toast.LENGTH_LONG).show()
+     //   })
+
+        this.listView.setOnItemLongClickListener(AdapterView.OnItemLongClickListener { parent, view, position, id ->
+
+            Log.i(TAG, "DELETE")
+            Log.i(TAG, "id" + id)
+            Log.i(TAG, "position" + position)
+
+            var delId = dbWriteable()?.delete(RegistrationColumns.TABLE, RegistrationColumns.ID + "=" + id, null)
+            if(delId != 0) {
+                Toast.makeText(this.activity, "Deleted", Toast.LENGTH_LONG).show()
+                mCategoryAdapter?.notifyDataSetChanged()
+                lm.restartLoader(LOADER_ID, null, mLoaderCallbacks)
+            }
+
+            true
+        })
+
     }
 
     /**
@@ -245,9 +250,7 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         if (!isExternalStorageWritable() || permissionCheck != PackageManager.PERMISSION_GRANTED) {
             exportButton?.setEnabled(false)
             Toast.makeText(this.activity.applicationContext, "Export files not allowed", Toast.LENGTH_LONG).show()
-            if(view != null) {
-                requestPermission(view)
-            }
+
         } else {
             Toast.makeText(this.activity.applicationContext, "Exporting data to file", Toast.LENGTH_LONG).show()
             val task = ExportFileTask(view.context, values)
@@ -291,7 +294,7 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
     private fun db(): SQLiteDatabase? {
         val dbm = DbHelper.getInstance(this.context)
         try {
-            db = dbm.getReadableDatabase()
+            db = dbm.readableDatabase
         } catch (e: SQLiteException) {
             Log.e(TAG, "SQL: " + e)
         }
@@ -299,28 +302,15 @@ import microvone.de.utils.FileUtils.isExternalStorageWritable
         return db
     }
 
-    //private val PERMISSION_REQUEST_EXTERNAL_STORAGE = 0
-    /**
-     * Requests the {@link android.Manifest.permission#CAMERA} permission.
-     * If an additional rationale should be displayed, the user has to launch the request from
-     * a SnackBar that includes additional information.
-     */
-    private fun requestPermission(view: View) {
-        // Permission has not been granted and must be requested.
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this.activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
-            // TODO:Display a SnackBar with a button to request the missing permission.
-
-            Snackbar.make(view, "Camera access is required to display the camera preview.",
-                    Snackbar.LENGTH_INDEFINITE).show()
-        } else {
-            Snackbar.make(view,"Permission is not available. Requesting writing external storage permission.",
-                    Snackbar.LENGTH_SHORT).show()
+    private fun dbWriteable(): SQLiteDatabase? {
+        val dbm = DbHelper.getInstance(this.context)
+        try {
+            db = dbm.writableDatabase
+        } catch (e: SQLiteException) {
+            Log.e(TAG, "SQL: " + e)
         }
+
+        return db
     }
-
-
 
 }
