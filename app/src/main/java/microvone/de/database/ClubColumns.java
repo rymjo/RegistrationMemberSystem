@@ -4,7 +4,7 @@ package microvone.de.database;
  * Created by jörn on 11.02.2018.
  */
 
-public class ClubColumns {
+public interface ClubColumns {
 
     String TABLE = "Club";
     String ID = "_id";
