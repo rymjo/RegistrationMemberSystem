@@ -21,7 +21,7 @@ import microvone.de.utils.Names
 import java.util.*
 
 import android.support.v7.app.AppCompatActivity
-
+import android.view.WindowManager
 
 
 /**
@@ -65,8 +65,8 @@ class ContinuousCaptureActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.i(TAG, "onCreate")
         setContentView(R.layout.continuous_scan)
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         barcodeView = findViewById(R.id.barcode_scanner) as DecoratedBarcodeView
         barcodeView!!.decodeContinuous(callback)
