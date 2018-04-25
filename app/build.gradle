@@ -14,7 +14,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -29,7 +28,6 @@ android {
             //  signingConfig signingConfigs.debug
         }
     }
-
     signingConfigs {
         debug {
             //storeFile file(RATIONAL_DEBUG_STORE_FILE)
@@ -41,7 +39,6 @@ android {
             // keyPassword RATIONAL_RELEASE_KEY_PASSWORD
         }
     }
-
     sourceSets {
         main {
             // manifest.srcFile "src/main/AndroidManifest.xml"
@@ -52,10 +49,13 @@ android {
             res.srcDirs = ['src/debug/res']
         }
     }
+    productFlavors {
+    }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
@@ -63,7 +63,6 @@ dependencies {
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'com.inthecheesefactory.thecheeselibrary:stated-fragment-support-v4:0.9.3'
-
     implementation 'com.google.android.gms:play-services-plus:11.8.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

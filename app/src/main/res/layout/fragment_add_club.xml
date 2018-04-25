@@ -4,11 +4,105 @@
     android:layout_height="match_parent"
     tools:context="microvone.de.admin.AddClubFragment">
 
-    <com.google.android.gms.plus.PlusOneButton xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
-        android:id="@+id/plus_one_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        plus:annotation="inline"
-        plus:size="standard" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView
+                    android:id="@+id/tv_add_club"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neuer Verein" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/textInputLayout_add_club"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/textInputEditText_add_club"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name des neuen Vereins" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_add_timezone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Neue Trainingszeiten" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <EditText
+                            android:id="@+id/editText_timezone_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:text="Tag/Uhrzeit"
+                            android:inputType="date"/>
+
+                        <Button
+                            android:id="@+id/button_add_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+" />
+
+                        <Button
+                            android:id="@+id/button_remove_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <EditText
+                            android:id="@+id/editText_timezone_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:inputType="textPersonName"
+                            android:text="Tag/Uhrzeit" />
+
+                        <Button
+                            android:id="@+id/button_add_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+" />
+
+                        <Button
+                            android:id="@+id/button_remove_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <Button
+                    android:id="@+id/button_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Speichern" />
+
+            </LinearLayout>
+        </ScrollView>
+
+
+
 
 </FrameLayout>
